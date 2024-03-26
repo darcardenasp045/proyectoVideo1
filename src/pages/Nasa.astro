@@ -1,0 +1,42 @@
+---
+
+import {type NasaType} from '../data/data.ts'
+const API_KEY = '8rWS2eLbGhG3fatQmEIN9I6Su6HWxmXByHcawMSH'
+const rest = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=${API_KEY}`)
+const data = await rest.json()
+
+const dataString = Object.values(data)
+const dataStringCut= dataString.slice(0,10)
+
+console.log(dataStringCut)
+console.log(dataString)
+console.log(dataString.length)
+import NasaComponent from "../components/NasaComponent.astro"
+import Layout from "../layouts/Layout.astro"
+---
+<Layout 
+    title="Curiosity Rover Photos" 
+    description="Curiosity Rover Photos from NASA"
+    >
+        <div class="p-9 gap-5 bg-slate-500">
+            <h1 class="font-bold text-3xl">Curiosity Rover Photos</h1>
+            <div class=" grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                
+                {
+                    dataString.map((item:any)=>(
+                        item.map((b:any)=>(
+                            <NasaComponent 
+                                id={b.id}
+                                src={b.img_src}
+                                date={b.earth_date}
+                                cameraName={b.camera?.name}
+                            />
+                            
+                        ))
+                    )
+                    )
+                }
+            </div>
+        </div>
+</Layout>
+
